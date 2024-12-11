@@ -17,7 +17,7 @@ def imresize(arr, size, mode=None):
     img = Image.fromarray(arr)
     if mode:
         img = img.convert(mode)
-    img = img.resize(size, Image.ANTIALIAS)
+    img = img.resize(size, Image.Resampling.LANCZOS)
     return np.array(img)
 
 features_blobs = []

@@ -13,8 +13,10 @@ import settings
 import numpy as np
 # unit,category,label,score
 
-def imresize(arr, size):
+def imresize(arr, size, mode=None):
     img = Image.fromarray(arr)
+    if mode:
+        img = img.convert(mode)
     img = img.resize(size, Image.ANTIALIAS)
     return np.array(img)
 

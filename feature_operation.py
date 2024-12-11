@@ -13,8 +13,10 @@ import multiprocessing.pool as pool
 from loader.data_loader import load_csv
 from loader.data_loader import SegmentationData, SegmentationPrefetcher
 
-def imresize(arr, size):
+def imresize(arr, size, mode=None):
     img = Image.fromarray(arr)
+    if mode:
+        img = img.convert(mode)
     img = img.resize(size, Image.ANTIALIAS)
     return np.array(img)
 

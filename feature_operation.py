@@ -1,7 +1,8 @@
 
 import os
 from torch.autograd import Variable as V
-from scipy.misc import imresize
+# from scipy.misc import imresize
+from PIL import Image
 import numpy as np
 import torch
 import settings
@@ -11,6 +12,11 @@ import util.vecquantile as vecquantile
 import multiprocessing.pool as pool
 from loader.data_loader import load_csv
 from loader.data_loader import SegmentationData, SegmentationPrefetcher
+
+def imresize(arr, size):
+    img = Image.fromarray(arr)
+    img = img.resize(size, Image.ANTIALIAS)
+    return np.array(img)
 
 features_blobs = []
 def hook_feature(module, input, output):

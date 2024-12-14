@@ -2,8 +2,8 @@
 GPU = True                                  # running on GPU is highly suggested
 TEST_MODE = False                           # turning on the testmode means the code will run on a small dataset.
 CLEAN = True                               # set to "True" if you want to clean the temporary large files after generating result
-MODEL = 'resnet18'                          # model arch: resnet18, alexnet, resnet50, densenet161
-DATASET = 'places365'                       # model trained on: places365 or imagenet
+MODEL = 'alexnet'                          # model arch: resnet18, alexnet, resnet50, densenet161
+DATASET = 'dog-cat-car'                       # model trained on: places365 or imagenet
 QUANTILE = 0.005                            # the threshold used for activation
 SEG_THRESHOLD = 0.04                        # the threshold used for visualization
 SCORE_THRESHOLD = 0.04                      # the threshold used for IoU score (in HTML file)
@@ -36,6 +36,9 @@ if DATASET == 'places365':
     NUM_CLASSES = 365
 elif DATASET == 'imagenet':
     NUM_CLASSES = 1000
+elif DATASET == 'dog-cat-car':
+    NUM_CLASSES = 3
+
 if MODEL == 'resnet18':
     FEATURE_NAMES = ['layer4']
     if DATASET == 'places365':
@@ -54,6 +57,9 @@ elif MODEL == 'resnet50':
     if DATASET == 'places365':
         MODEL_FILE = 'zoo/whole_resnet50_places365_python36.pth.tar'
         MODEL_PARALLEL = False
+elif MODEL == 'alexnet':
+    FEATURE_NAMES = ['features']
+    MODEL_FILE = 'model/best_model.pth'
 
 if TEST_MODE:
     WORKERS = 1

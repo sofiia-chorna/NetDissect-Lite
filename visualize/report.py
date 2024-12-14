@@ -13,6 +13,7 @@ import settings
 import numpy as np
 # unit,category,label,score
 
+
 def imresize(arr, size, mode=None):
     img = Image.fromarray(arr)
     if mode:
@@ -20,16 +21,17 @@ def imresize(arr, size, mode=None):
     img = img.resize(size, Image.Resampling.LANCZOS)
     return np.array(img)
 
+
 replacements = [(re.compile(r[0]), r[1]) for r in [
     (r'-[sc]$', ''),
     (r'_', ' '),
     ]]
 
+
 def fix(s):
     for pattern, subst in replacements:
         s = re.sub(pattern, subst, s)
     return s
-
 
 
 def generate_html_summary(ds, layer, maxfeature=None, features=None, thresholds=None,

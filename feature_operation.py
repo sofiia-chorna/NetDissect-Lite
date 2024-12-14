@@ -13,6 +13,7 @@ import multiprocessing.pool as pool
 from loader.data_loader import load_csv
 from loader.data_loader import SegmentationData, SegmentationPrefetcher
 
+
 def imresize(arr, size, mode=None):
     img = Image.fromarray(arr)
     if mode:
@@ -20,7 +21,10 @@ def imresize(arr, size, mode=None):
     img = img.resize(size, Image.Resampling.LANCZOS)
     return np.array(img)
 
+
 features_blobs = []
+
+
 def hook_feature(module, input, output):
     features_blobs.append(output.data.cpu().numpy())
 
@@ -44,16 +48,16 @@ class FeatureOperator:
 
         if memmap:
             skip = True
-            mmap_files =  [os.path.join(settings.OUTPUT_FOLDER, "%s.mmap" % feature_name)  for feature_name in  settings.FEATURE_NAMES]
+            mmap_files = [os.path.join(settings.OUTPUT_FOLDER, "%s.mmap" % feature_name) for feature_name in settings.FEATURE_NAMES]
             mmap_max_files = [os.path.join(settings.OUTPUT_FOLDER, "%s_max.mmap" % feature_name) for feature_name in settings.FEATURE_NAMES]
             if os.path.exists(features_size_file):
                 features_size = np.load(features_size_file)
             else:
                 skip = False
-            for i, (mmap_file, mmap_max_file) in enumerate(zip(mmap_files,mmap_max_files)):
+            for i, (mmap_file, mmap_max_file) in enumerate(zip(mmap_files, mmap_max_files)):
                 if os.path.exists(mmap_file) and os.path.exists(mmap_max_file) and features_size[i] is not None:
                     print('loading features %s' % settings.FEATURE_NAMES[i])
-                    wholefeatures[i] = np.memmap(mmap_file, dtype=float,mode='r', shape=tuple(features_size[i]))
+                    wholefeatures[i] = np.memmap(mmap_file, dtype=float, mode='r', shape=tuple(features_size[i]))
                     maxfeatures[i] = np.memmap(mmap_max_file, dtype=float, mode='r', shape=tuple(features_size[i][:2]))
                 else:
                     print('file missing, loading from scratch')
@@ -108,7 +112,7 @@ class FeatureOperator:
                     maxfeatures[i][start_idx:end_idx] = feat_batch
         if len(feat_batch.shape) == 2:
             wholefeatures = maxfeatures
-        return wholefeatures,maxfeatures
+        return wholefeatures, maxfeatures
 
     def quantile_threshold(self, features, savepath=''):
         qtpath = os.path.join(settings.OUTPUT_FOLDER, savepath)
